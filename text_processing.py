@@ -33,8 +33,12 @@ def return_records(fname):
 class record(dict):
     def __setitem__(self, key, value):
         if key in self:
-            ### Duplicate dimension IDs, verify that duplicates are omitted
-            super().__setitem__(key, [self[key], value])
+            if isinstance(self[key], list):
+                if value not in self[key]:  # naively preventing duplicates
+                    self[key].append(value)
+            else:
+                ### Duplicate dimension IDs, verify that duplicates are omitted
+                super().__setitem__(key, [self[key], value])
         else:
             super().__setitem__(key, value)
 
