@@ -11,8 +11,10 @@ def iterate_over_xml(fname):
         if elem.tag in out_tags:
             out_tags.add(elem.tag)
         elem.clear()
-    pickle.dump(out_tags, 'tpl_xml.tags')
+    with open('tpl_xml_tags.pkl', 'wb') as outfile:
+        pickle.dump(out_tags, outfile)
+    return out_tags
 
 if __name__ == "__main__":
-    all_events = iterate_over_xml('tpl.xml')
+    all_tags = iterate_over_xml('tpl.xml')
     import ipdb; ipdb.set_trace()
