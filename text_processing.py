@@ -29,8 +29,23 @@ def return_records(fname):
     yield out_gen()
 
 
-def parse_record(etree):
-    import ipdb; ipdb.set_trace()
+def try_get_attr(item, attr_name):
+    attr = None
+    if hasattr(item, attr_name):
+        attr = getattr(item, attr_name)
+    return attr
+
+
+def parse_record(etree, r_str):
+    out_record = {}
+    for child in etree.getchildren():
+        for grandchild in child.getchildren():
+            text = try_get_attr(grandchild, 'text')
+        attr = try_get_attr(child, 'attrib')
+        print(attr)
+        print(text)
+        import ipdb; ipdb.set_trace()
+    return out_record
 
 
 if __name__ == '__main__':
@@ -38,5 +53,7 @@ if __name__ == '__main__':
     with return_records('tpl.xml') as records:
         for record in records:
             print(len(record))
-            tree = cElementTree.fromstring(record)
-            import ipdb; ipdb.set_trace()
+            parse_record(
+                cElementTree.fromstring(record),
+                record.replace('\n', '')
+            )
