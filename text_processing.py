@@ -5,6 +5,7 @@
 
 from contextlib import contextmanager
 from xml.etree import cElementTree
+import json
 
 
 @contextmanager
@@ -32,6 +33,7 @@ def return_records(fname):
 class record(dict):
     def __setitem__(self, key, value):
         if key in self:
+            ### Duplicate dimension IDs, verify that duplicates are omitted
             super().__setitem__(key, [self[key], value])
         else:
             super().__setitem__(key, value)
@@ -64,11 +66,13 @@ def parse_record(etree, r_str):
 
 
 if __name__ == '__main__':
-    out_list = []
     with return_records('tpl.xml') as records:
-        for record_str in records:
-            print(len(record_str))
-            parse_record(
-                cElementTree.fromstring(record_str),
-                record_str.replace('\n', '')
-            )
+        with open('tpl.json', 'wb') as json_file:
+            for record_str in records:
+                print(len(record_str))
+                out_dict = parse_record(
+                    cElementTree.fromstring(record_str),
+                    record_str.replace('\n', '')
+                )
+                out_str = json.dumps(out_dict)
+                json_file.write(out_str)
