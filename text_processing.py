@@ -47,11 +47,18 @@ def try_get_attr(item, attr_name):
 def parse_record(etree, r_str):
     out_record = record()
     for child in etree.getchildren():
+        text = None
+        grandchild = None
         for grandchild in child.getchildren():
             text = try_get_attr(grandchild, 'text')
         attr = try_get_attr(child, 'attrib')
-        out_record[attr['NAME']] = text
-    import ipdb; ipdb.set_trace()
+        if 'NAME' in attr:
+            out_record[attr['NAME']] = text
+        elif 'DIMENSION_ID' in attr and 'ID' in attr:
+            out_record['dimensions'] = attr
+        else:
+            ## catch-all case, something is weird going on with the data
+            import ipdb; ipdb.set_trace()
 
     return out_record
 
