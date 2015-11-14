@@ -50,6 +50,10 @@ def try_get_attr(item, attr_name):
     return attr
 
 
+def cast_vals_to_ints(in_dict):
+    return dict([(k, int(v),) for k, v in in_dict.items()])
+
+
 def parse_record(etree, r_str):
     out_record = record()
     for child in etree.getchildren():
@@ -61,7 +65,7 @@ def parse_record(etree, r_str):
         if 'NAME' in attr:
             out_record[attr['NAME']] = text
         elif 'DIMENSION_ID' in attr and 'ID' in attr:
-            out_record['dimensions'] = attr
+            out_record['dimensions'] = cast_vals_to_ints(attr)
         else:
             ## catch-all case, something is weird going on with the data
             import ipdb; ipdb.set_trace()
