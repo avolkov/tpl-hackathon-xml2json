@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-# GOAL -- convert XML into a set of json records that can be further
-# converted into db records of some sort
+# Break up xml into RECORDS, parse the records one at a time and write into
+# a json file (tpl.json) file, one line per record
+
 
 from contextlib import contextmanager
 from xml.etree import cElementTree
@@ -10,6 +11,15 @@ import json
 
 @contextmanager
 def return_records(fname):
+    """
+    A context manager that returs a generator producing strings extracted from
+    xml file that begin with <RECORD> and end with </RECORD>
+
+    Parameters
+    ----------
+    fname:  str
+            A filename, the source xml file.
+    """
     def out_gen():
         with open(fname, 'r') as tpl_xml:
             lines = []
@@ -31,6 +41,11 @@ def return_records(fname):
 
 
 class record(dict):
+    """
+    Dictionary that turns values into lists when a value of a particular key is
+    inserted more than one time. This code also has basic checks to prevent
+    duplicates
+    """
     def __setitem__(self, key, value):
         if key in self:
             if isinstance(self[key], list):
@@ -44,6 +59,15 @@ class record(dict):
 
 
 def try_get_attr(item, attr_name):
+    """
+    Given an element tree and attributes you're looking for extract the
+    attributes without crashing
+
+    Parameters
+    ----------
+    item:       xml.etree.cElementTree.Element
+    attr_name:  str
+    """
     attr = None
     if hasattr(item, attr_name):
         attr = getattr(item, attr_name)
@@ -51,10 +75,27 @@ def try_get_attr(item, attr_name):
 
 
 def cast_vals_to_ints(in_dict):
+    """
+    Given a dictinary with dimension descriptions, convert values to integers
+
+    Parameters
+    ----------
+    in_dict:    dict
+                Dictionary with values that can be converted to string
+    """
     return dict([(k, int(v),) for k, v in in_dict.items()])
 
 
-def parse_record(etree, r_str):
+def parse_record(etree):
+    """
+    Given a record tree, parse it and return a dictionary
+
+    Parameters
+    ----------
+    etree:  xml.etree.cElementTree.Element
+            An element tree with the root <RECORD> and children describing said
+            record.
+    """
     out_record = record()
     for child in etree.getchildren():
         text = None
