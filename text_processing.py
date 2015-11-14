@@ -69,10 +69,9 @@ if __name__ == '__main__':
     with return_records('tpl.xml') as records:
         with open('tpl.json', 'wb') as json_file:
             for record_str in records:
-                print(len(record_str))
                 out_dict = parse_record(
                     cElementTree.fromstring(record_str),
                     record_str.replace('\n', '')
                 )
                 out_str = json.dumps(out_dict)
-                json_file.write(out_str)
+                json_file.write(bytes(out_str, "utf-8"))
