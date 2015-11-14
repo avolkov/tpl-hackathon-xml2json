@@ -5,8 +5,22 @@ from xml.etree import cElementTree
 import pickle
 
 
+def try_get_attr(item, attr_name):
+    attr = None
+    if hasattr(item, attr_name):
+        attr = getattr(item, attr_name)
+    return attr
+
+
 def process_entries(record):
-    import ipdb; ipdb.set_trace()
+    for child in record.getchildren():
+        if child.getchildren():
+            import ipdb; ipdb.set_trace()
+        attr = try_get_attr(child, 'attrib')
+        text = try_get_attr(child, 'text')
+        print(attr, text)
+
+
 
 
 def iterate_over_xml(fname):
