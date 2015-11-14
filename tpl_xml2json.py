@@ -62,22 +62,6 @@ class record(dict):
             super().__setitem__(key, value)
 
 
-def try_get_attr(item, attr_name):
-    """
-    Given an element tree and attributes you're looking for extract the
-    attributes without crashing
-
-    Parameters
-    ----------
-    item:       xml.etree.cElementTree.Element
-    attr_name:  str
-    """
-    attr = None
-    if hasattr(item, attr_name):
-        attr = getattr(item, attr_name)
-    return attr
-
-
 def cast_vals_to_ints(in_dict):
     """
     Given a dictinary with dimension descriptions,  modify it, converting
@@ -103,13 +87,18 @@ def parse_record(etree):
             An element tree with the root <RECORD> and children describing said
             record.
     """
+    def ntoe(in_str):
+        """Return empty string instead of None to simplify str catenation"""
+        attr = getattr(in_str, 'text', '')
+        return attr if attr else ""
+
     out_record = record()
     for child in etree.getchildren():
         text = "".join([
-            try_get_attr(grandchild, 'text')
+            ntoe(grandchild)
             for grandchild in child.getchildren()
         ])
-        attr = try_get_attr(child, 'attrib')
+        attr = getattr(child, 'attrib')
         if 'NAME' in attr:
             out_record[attr['NAME']] = text
         elif 'DIMENSION_ID' in attr and 'ID' in attr:
