@@ -2,7 +2,7 @@
 
 
 from contextlib import contextmanager
-
+from xml.etree import cElementTree
 
 @contextmanager
 def return_records(fname):
@@ -29,3 +29,5 @@ if __name__ == '__main__':
     with return_records('tpl.xml') as records:
         for record in records:
             print(len(record))
+            tree = cElementTree.fromstring(record)
+            import ipdb; ipdb.set_trace()
