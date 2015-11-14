@@ -29,6 +29,14 @@ def return_records(fname):
     yield out_gen()
 
 
+class record(dict):
+    def __setitem__(self, key, value):
+        if key in self:
+            super().__setitem__(key, [self[key], value])
+        else:
+            super().__setitem__(key, value)
+
+
 def try_get_attr(item, attr_name):
     attr = None
     if hasattr(item, attr_name):
@@ -37,23 +45,23 @@ def try_get_attr(item, attr_name):
 
 
 def parse_record(etree, r_str):
-    out_record = {}
+    out_record = record()
     for child in etree.getchildren():
         for grandchild in child.getchildren():
             text = try_get_attr(grandchild, 'text')
         attr = try_get_attr(child, 'attrib')
-        print(attr)
-        print(text)
-        import ipdb; ipdb.set_trace()
+        out_record[attr['NAME']] = text
+    import ipdb; ipdb.set_trace()
+
     return out_record
 
 
 if __name__ == '__main__':
     out_list = []
     with return_records('tpl.xml') as records:
-        for record in records:
-            print(len(record))
+        for record_str in records:
+            print(len(record_str))
             parse_record(
-                cElementTree.fromstring(record),
-                record.replace('\n', '')
+                cElementTree.fromstring(record_str),
+                record_str.replace('\n', '')
             )
