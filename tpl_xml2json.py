@@ -105,7 +105,7 @@ def parse_record(etree):
             out_record['dimensions'] = cast_vals_to_ints(attr)
         else:
             ## catch-all case, something is weird going on with the data
-            import ipdb; ipdb.set_trace()
+            print("Unexpected attribute: ", attr)
 
     return out_record
 
