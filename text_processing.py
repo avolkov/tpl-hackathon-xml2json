@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
+# GOAL -- convert XML into a set of json records that can be further
+# converted into db records of some sort
 
 from contextlib import contextmanager
 from xml.etree import cElementTree
+
 
 @contextmanager
 def return_records(fname):
@@ -25,7 +28,13 @@ def return_records(fname):
                         lines.append(line)
     yield out_gen()
 
+
+def parse_record(etree):
+    import ipdb; ipdb.set_trace()
+
+
 if __name__ == '__main__':
+    out_list = []
     with return_records('tpl.xml') as records:
         for record in records:
             print(len(record))
