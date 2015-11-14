@@ -82,4 +82,5 @@ if __name__ == '__main__':
                     record_str.replace('\n', '')
                 )
                 out_str = json.dumps(out_dict)
+                out_str += '\n'
                 json_file.write(bytes(out_str, "utf-8"))
