@@ -25,15 +25,19 @@ def return_records(fname):
             lines = []
             in_record = False
             for line in tpl_xml:
+                line = line.strip()
                 if in_record and '</RECORD>' in line:
+                    # detect the end of the record
                     lines.append(line)
                     in_record = False
                     out_str = "".join(lines)
                     lines = []
                     yield out_str
                 elif in_record:
+                    # reading record lines
                     lines.append(line)
                 else:
+                    # detect the begging of the record
                     if '<RECORD>' in line:
                         in_record = True
                         lines.append(line)
@@ -76,14 +80,17 @@ def try_get_attr(item, attr_name):
 
 def cast_vals_to_ints(in_dict):
     """
-    Given a dictinary with dimension descriptions, convert values to integers
+    Given a dictinary with dimension descriptions,  modify it, converting
+    values to integers
 
     Parameters
     ----------
     in_dict:    dict
                 Dictionary with values that can be converted to string
     """
-    return dict([(k, int(v),) for k, v in in_dict.items()])
+    for k in in_dict.keys():
+        in_dict[k] = int(in_dict[k])
+    return in_dict
 
 
 def parse_record(etree):
@@ -98,10 +105,10 @@ def parse_record(etree):
     """
     out_record = record()
     for child in etree.getchildren():
-        text = None
-        grandchild = None
-        for grandchild in child.getchildren():
-            text = try_get_attr(grandchild, 'text')
+        text = "".join([
+            try_get_attr(grandchild, 'text')
+            for grandchild in child.getchildren()
+        ])
         attr = try_get_attr(child, 'attrib')
         if 'NAME' in attr:
             out_record[attr['NAME']] = text
@@ -118,10 +125,6 @@ if __name__ == '__main__':
     with return_records('tpl.xml') as records:
         with open('tpl.json', 'wb') as json_file:
             for record_str in records:
-                out_dict = parse_record(
-                    cElementTree.fromstring(record_str),
-                    record_str.replace('\n', '')
-                )
-                out_str = json.dumps(out_dict)
-                out_str += '\n'
+                out_dict = parse_record(cElementTree.fromstring(record_str))
+                out_str = "%s\n" % json.dumps(out_dict)
                 json_file.write(bytes(out_str, "utf-8"))
