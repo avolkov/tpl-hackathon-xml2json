@@ -14,11 +14,10 @@ def try_get_attr(item, attr_name):
 
 def process_entries(record):
     for child in record.getchildren():
-        if child.getchildren():
-            import ipdb; ipdb.set_trace()
         attr = try_get_attr(child, 'attrib')
         text = try_get_attr(child, 'text')
-        print(attr, text)
+        if attr or text:
+            import ipdb; ipdb.set_trace()
 
 
 
