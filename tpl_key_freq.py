@@ -16,3 +16,6 @@ pprint(most_freq)
 print()
 print("10 least frequent:")
 pprint(least_freq)
+
+with open('tpl_key_freq_sorted.json', 'w') as outfile:
+    pprint(OrderedDict([x for x in reversed(sorted_keys)]), outfile)
