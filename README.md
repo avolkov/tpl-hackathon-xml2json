@@ -19,7 +19,7 @@ Run time as measured on a 20GB XML segment, the program running on AMD FX-8329 C
 
 `tpl_read_json.py` -- reads in `tpl.json` produced with `tpl_xml2json.py`  and stops at debug point waiting for the user input.
 
-`tpl_count_str.keys` -- count how many times a key with a string value occurs. The application outpus key_stats.json
+`tpl_count_keys.py` -- count how many times a key with a string value occurs. The application outpus key_stats.json
 
 Runtime as measured on an 11GB json segment, tested on AMD FX-8329 CPU (3.2GHz)
 
