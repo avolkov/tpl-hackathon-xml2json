@@ -3,7 +3,9 @@ tpl_hackathon
 
 The goal of this project is to convert all presented XML data into JSON making it more available to the developers.
 
-The project is written in Python 3.4.3, no external libraries were user, however I just ipdb for debugging.
+The project is written in Python 3.4.3, no external libraries were user, however I used ipdb for debugging.
+
+Data file, 786 MB -- http://data.flamy.ca/tpl.json.xz
 
 # Main scripts
 
