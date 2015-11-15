@@ -4,6 +4,7 @@ TPL Hackathon
 A beginner's attempt at data wrangling.
 
 The goal of this project is to convert all presented XML data into JSON making it more available to the developers.
+For further rationale see [presentation_notes.md](documentation/presentation_notes.md) and [TPL_Hackathon_presentation.odp](documentation/TPL_Hackathon_presentation.odp)
 
 The project is written in Python 3.4.3, no external libraries were user, however I used ipdb for debugging.
 
