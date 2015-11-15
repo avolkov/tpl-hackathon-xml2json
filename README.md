@@ -5,17 +5,33 @@ The goal of this project is to convert all presented XML data into JSON making i
 
 The project is written in Python 3.4.3, no external libraries were user, however I just ipdb for debugging.
 
+# Main scripts
+
 `tpl_xml2json.py` -- reads input `tpl.xml` and outputs `tpl.json`
 
-Run time as measured on a 20GB segment, the program running on AMD FX-8329 CPU (3.2GHz)
+Run time as measured on a 20GB XML segment, the program running on AMD FX-8329 CPU (3.2GHz)
+
+    $ time python tpl_xml2json.py
+    real    54m37.292s
+    user    51m57.212s
+    sys     0m56.504s
+
 
 `tpl_read_json.py` -- reads in `tpl.json` produced with `tpl_xml2json.py`  and stops at debug point waiting for the user input.
 
 `tpl_count_str.keys` -- count how many times a key with a string value occurs. The application outpus key_stats.json
 
+Runtime as measured on an 11GB json segment, tested on AMD FX-8329 CPU (3.2GHz)
 
-A sample tpl.xml record:
+    $ time python tpl_count_str_keys.py
+    real    4m56.003s
+    user    4m51.360s
+    sys     0m4.520s
 
+
+Performance
+
+# A sample tpl.xml record:
 
 
     <RECORD>
