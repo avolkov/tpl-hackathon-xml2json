@@ -1,5 +1,7 @@
-tpl_hackathon
+TPL Hackathon
 ===========
+
+A beginner's attempt at data wrangling.
 
 The goal of this project is to convert all presented XML data into JSON making it more available to the developers.
 
