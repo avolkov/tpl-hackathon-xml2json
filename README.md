@@ -13,7 +13,7 @@ Data file, 786 MB -- http://data.flamy.ca/tpl.json.xz
 
 `tpl_xml2json.py` -- reads input `tpl.xml` and outputs `tpl.json`
 
-Run time as measured on a 20GB XML segment, the program running on AMD FX-8329 CPU (3.2GHz)
+Run time as measured on a 20GB XML segment, the program running on AMD FX-8329 CPU (3.2GHz) with an HDD
 
     $ time python tpl_xml2json.py
     real    54m37.292s
@@ -25,12 +25,14 @@ Run time as measured on a 20GB XML segment, the program running on AMD FX-8329 C
 
 `tpl_count_keys.py` -- count how many times a key with a string value occurs. The application outpus key_stats.json
 
-Runtime as measured on an 11GB json segment, tested on AMD FX-8329 CPU (3.2GHz)
+Runtime as measured on an 11GB json segment, tested on AMD FX-8329 CPU (3.2GHz) with an HDD
 
     $ time python tpl_count_str_keys.py
     real    4m56.003s
     user    4m51.360s
     sys     0m4.520s
+
+`tpl_count_keys.py` -- uses `key_stats.json` as input, produces `keys_stats_sorted_pretty.json` as output also prints out 10 most frequent and 10 least frequent keys.
 
 
 Performance
