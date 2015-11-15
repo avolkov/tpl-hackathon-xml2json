@@ -14,4 +14,4 @@ if __name__ == '__main__':
             str_keys = [k for k, v in tpl_dict.items() if isinstance(v, str)]
             key_count.update(str_keys)
             key_count['total_count'] += 1
-    open('key_stats.json', 'w').write(bytes(json.dumps(key_count), 'utf-8'))
+    open('key_stats.json', 'wb').write(bytes(json.dumps(key_count), 'utf-8'))
