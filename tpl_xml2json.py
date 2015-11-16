@@ -4,12 +4,10 @@
 # a json file (tpl.json) file, one line per record
 
 
-from contextlib import contextmanager
 from xml.etree import cElementTree
 import json
 
 
-@contextmanager
 def return_records(fname):
     """
     A context manager that returs a generator producing strings extracted from
@@ -20,28 +18,26 @@ def return_records(fname):
     fname:  str
             A filename, the source xml file.
     """
-    def out_gen():
-        with open(fname, 'r') as tpl_xml:
-            lines = []
-            in_record = False
-            for line in tpl_xml:
-                line = line.strip()
-                if in_record and '</RECORD>' in line:
-                    # detect the end of the record
+    with open(fname, 'r') as tpl_xml:
+        lines = []
+        in_record = False
+        for line in tpl_xml:
+            line = line.strip()
+            if in_record and '</RECORD>' in line:
+                # detect the end of the record
+                lines.append(line)
+                in_record = False
+                out_str = "".join(lines)
+                lines = []
+                yield out_str
+            elif in_record:
+                # reading record lines
+                lines.append(line)
+            else:
+                # detect the begging of the record
+                if '<RECORD>' in line:
+                    in_record = True
                     lines.append(line)
-                    in_record = False
-                    out_str = "".join(lines)
-                    lines = []
-                    yield out_str
-                elif in_record:
-                    # reading record lines
-                    lines.append(line)
-                else:
-                    # detect the begging of the record
-                    if '<RECORD>' in line:
-                        in_record = True
-                        lines.append(line)
-    yield out_gen()
 
 
 class record(dict):
@@ -111,9 +107,8 @@ def parse_record(etree):
 
 
 if __name__ == '__main__':
-    with return_records('tpl.xml') as records:
-        with open('tpl.json', 'wb') as json_file:
-            for record_str in records:
-                out_dict = parse_record(cElementTree.fromstring(record_str))
-                out_str = "%s\n" % json.dumps(out_dict)
-                json_file.write(bytes(out_str, "utf-8"))
+    with open('tpl.json', 'wb') as json_file:
+        for record_str in return_records('tpl.xml'):
+            out_dict = parse_record(cElementTree.fromstring(record_str))
+            out_str = "%s\n" % json.dumps(out_dict)
+            json_file.write(bytes(out_str, "utf-8"))
