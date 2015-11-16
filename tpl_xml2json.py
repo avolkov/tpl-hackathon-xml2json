@@ -7,7 +7,7 @@
 from xml.etree import cElementTree
 import json
 
-
+## TODO: reimplement \w asyncio.coroutine
 def return_records(fname):
     """
     A context manager that returs a generator producing strings extracted from
