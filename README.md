@@ -8,7 +8,10 @@ For further rationale see [presentation_notes.md](documentation/presentation_not
 
 The project is written in Python 3.4.3, no external libraries were user, however I used ipdb for debugging.
 
-Data file, 786 MB -- http://data.flamy.ca/tpl.json.xz
+Source dataset -- http://hackathon.tplcs.ca/data/TPLWebsiteData.2015-11.xml.zip
+Converted dataset, 786 MB (11G uncompressed) -- http://data.flamy.ca/tpl.json.xz
+
+If in doubt unpack with http://www.7-zip.org/
 
 # Main scripts
 
